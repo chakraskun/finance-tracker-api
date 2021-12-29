@@ -5,10 +5,15 @@ class InvoicesController < ApplicationController
   def create
     @invoice = Invoice.new(invoice_params)
     if @invoice.save
-      render json: @invoice, status: :created
+      return render json: ::Dto::BaseResponse.created(
+        data: {
+          invoice: @invoice
+        }
+      )
     else
-      render json: { errors: @invoice.errors.full_messages },
-             status: :unprocessable_entity
+      render json: ::Dto::BaseResponse.unprocessable_entity(
+        message: @invoice.errors.full_messages
+      )
     end
   end
 
@@ -16,7 +21,8 @@ class InvoicesController < ApplicationController
 
   def invoice_params
     params.require(:invoice).permit(
-      :invoice_type, :price, :description, :user_id
+      :invoice_type, :price, :description, :user_id,
+      :date
     )
   end
 end
