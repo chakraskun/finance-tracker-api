@@ -1,7 +1,17 @@
 class InvoicesController < ApplicationController
   before_action :authorize_request
-  before_action :find_invoice, except: %i[create]
+  before_action :find_invoice, except: %i[create, index]
 
+  def index
+    invoices = Invoice.all
+    invoices_serializer = InvoiceSerializer.new(invoices).attributes
+    return render json: ::Dto::BaseResponse.ok(
+      data: {
+        invoices: invoices_serializer
+      }
+    )
+  end
+  
   def show
     unless @invoice.present?
       return render json: ::Dto::BaseResponse.bad_request(

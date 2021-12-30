@@ -11,6 +11,7 @@ gem 'bcrypt'
 gem 'jwt'
 gem 'money-rails'
 gem 'jsonapi-serializer'
+gem 'rack-cors'
 
 gem 'bootsnap', '>= 1.4.4', require: false
 
